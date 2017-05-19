@@ -3,7 +3,25 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26430.4
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvmSmartHome.NET", "AvmSmartHome.NET\AvmSmartHome.NET.csproj", "{75ED98E0-2D7C-48F4-8017-937D0EB787AF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvmSmartHome.NET.Test", "AvmSmartHome.NET.Test\AvmSmartHome.NET.Test.csproj", "{015643B2-B5D1-4FCC-9DDD-A76FEB0139EA}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{75ED98E0-2D7C-48F4-8017-937D0EB787AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75ED98E0-2D7C-48F4-8017-937D0EB787AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75ED98E0-2D7C-48F4-8017-937D0EB787AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75ED98E0-2D7C-48F4-8017-937D0EB787AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{015643B2-B5D1-4FCC-9DDD-A76FEB0139EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{015643B2-B5D1-4FCC-9DDD-A76FEB0139EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{015643B2-B5D1-4FCC-9DDD-A76FEB0139EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{015643B2-B5D1-4FCC-9DDD-A76FEB0139EA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
