@@ -1,6 +1,5 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
 
@@ -8,32 +7,18 @@ namespace AvmSmartHome.NET.Test
 {
     [TestClass]
     public class TestSession
-    {
-        string USERNAME = "testuser";
-        string PASSWORD = "testpassword";
-        string HOSTNAME = "fritz.box";
-
-        [TestMethod]
-        public void ChallengeHashing()
-        {
-            string challenge = "1234567z";
-            string password = "äbc";
-            string expected = "9e224a41eeefa284df7bb0f26c2913e2";
-            string actual = Helpers.ComputeMD5($"{challenge}-{password}", Encoding.Unicode);
-            Assert.AreEqual(expected, actual);
-        }
-
+    {        
         [TestMethod]
         public async Task SessionCreation()
         {
-            SessionInfo session = new SessionInfo(USERNAME, PASSWORD, HOSTNAME);
+            SessionInfo session = new SessionInfo(TestCredentials.USERNAME, TestCredentials.PASSWORD, TestCredentials.HOSTNAME);
             await session.AuthenticateAsync();
         }
 
         [TestMethod]
         public async Task GetSwitchList()
         {
-            SessionInfo session = new SessionInfo(USERNAME, PASSWORD, HOSTNAME);
+            SessionInfo session = new SessionInfo(TestCredentials.USERNAME, TestCredentials.PASSWORD, TestCredentials.HOSTNAME);
             await session.AuthenticateAsync();
             string[] switches = await session.GetSwitchesAsync();
         }
@@ -41,7 +26,7 @@ namespace AvmSmartHome.NET.Test
         [TestMethod]
         public async Task GetSwitchTemperatures()
         {
-            SessionInfo session = new SessionInfo(USERNAME, PASSWORD, HOSTNAME);
+            SessionInfo session = new SessionInfo(TestCredentials.USERNAME, TestCredentials.PASSWORD, TestCredentials.HOSTNAME);
             await session.AuthenticateAsync();
             string[] switches = await session.GetSwitchesAsync();
             foreach (string ain in switches)
@@ -63,11 +48,11 @@ namespace AvmSmartHome.NET.Test
         [TestMethod]
         public async Task TestActuator()
         {
-            SessionInfo session = new SessionInfo(USERNAME, PASSWORD, HOSTNAME);
+            SessionInfo session = new SessionInfo(TestCredentials.USERNAME, TestCredentials.PASSWORD, TestCredentials.HOSTNAME);
             await session.AuthenticateAsync();
             string ain = "087610251884";
 
-            bool? initial_state = await session.GetSwitchStateAsync(ain);
+            bool? initial_state = await session.GetSwitchStateAsync(TestCredentials.LampAIN);
 
             switch (initial_state)
             {
@@ -89,6 +74,15 @@ namespace AvmSmartHome.NET.Test
             bool? check_state = await session.GetSwitchStateAsync(ain);
 
             Assert.IsTrue(initial_state == check_state);
+        }
+
+        [TestMethod]
+        public async Task TestDeviceListInfos()
+        {
+            SessionInfo session = new SessionInfo(TestCredentials.USERNAME, TestCredentials.PASSWORD, TestCredentials.HOSTNAME);
+            await session.AuthenticateAsync();
+            
+            var result = await session.GetDeviceListInfosAsync();
         }
 
     }

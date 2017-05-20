@@ -1,52 +1,23 @@
-﻿using System.ComponentModel;
-using System.Runtime.CompilerServices;
+﻿using System.Xml.Serialization;
 
 namespace AvmSmartHome.NET
 {
-    public class Temperature : INotifyPropertyChanged
+    [XmlRoot(ElementName = "temperature")]
+    public class Temperature
     {
-        #region INotifyPropertyChanged Members
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        [XmlElement(ElementName = "celsius")]
+        public double CelsiusSteps { get; set; }
+        [XmlIgnore]
+        public double Celsius { get { return CelsiusSteps / 10; } set { CelsiusSteps = value * 10; } }
+
+        [XmlElement(ElementName = "offset")]
+        public double OffsetSteps { get; set; }
+        [XmlIgnore]
+        public double Offset { get { return OffsetSteps / 10; } set { OffsetSteps = value * 10; } }
+
+        public Temperature()
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-        #endregion
 
-        private int _Value;
-        private int tempwert;
-
-        public Temperature(int tempwert)
-        {
-            this.tempwert = tempwert;
-        }
-
-        public int Value { get { return _Value; } set { _Value = value; OnPropertyChanged(); } }
-
-        public string Name
-        {
-            get
-            {
-                switch (Value)
-                {
-                    case 253: return "Aus";
-                    case 254: return "An";
-                    case 16: return "<= 8°C";
-                    case 56: return ">= 28°C";
-                    default:
-                        double temp = 8;
-                        temp += (_Value - 16) * 0.5;
-                        return $"{temp:.1f}°C";
-                }
-            }
-        }
-
-        public bool IsOn { get { return _Value != 253; } }
-
-        public override string ToString()
-        {
-            return base.ToString();
         }
     }
-
 }

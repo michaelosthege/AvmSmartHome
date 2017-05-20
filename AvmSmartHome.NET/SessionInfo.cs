@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using System.Xml.Schema;
+using System.Net.Http;
 
 namespace AvmSmartHome.NET
 {
@@ -71,6 +72,8 @@ namespace AvmSmartHome.NET
         /// Acquire a session ID (SID) according to the procedure described in
         /// https://avm.de/fileadmin/user_upload/Global/Service/Schnittstellen/AVM_Technical_Note_-_Session_ID.pdf
         /// </summary>
+        /// <exception cref="UnauthorizedAccessException"></exception>
+        /// <exception cref="HttpRequestException">400, 403, 500</exception>
         /// <returns>SessionInfo</returns>
         public async Task AuthenticateAsync()
         {
@@ -89,6 +92,8 @@ namespace AvmSmartHome.NET
             this.Rights = final.Rights;
             this.SID = final.SID;
             this.Challenge = final.Challenge;
+            if (this.SID == "0000000000000000")
+                throw new UnauthorizedAccessException();
         }
 
         /// <summary>
@@ -106,6 +111,7 @@ namespace AvmSmartHome.NET
         /// <summary>
         /// Liefert die kommaseparierte AIN/MAC Liste aller bekannten Steckdosen.
         /// </summary>
+        /// <exception cref="HttpRequestException">400, 403, 500</exception>
         /// <returns>Liste von AIN/MAC</returns>
         public async Task<string[]> GetSwitchesAsync()
         {
@@ -118,19 +124,22 @@ namespace AvmSmartHome.NET
         /// <summary>
         /// Liefert die grundlegenden Informationen aller SmartHome-Geräte.
         /// </summary>
+        /// <exception cref="HttpRequestException">400, 403, 500</exception>
         /// <returns>XML</returns>
-        public async Task<string> GetDeviceListInfosAsync()
+        public async Task<DeviceList> GetDeviceListInfosAsync()
         {
             string url = $"{BaseURL}/webservices/homeautoswitch.lua?switchcmd=getdevicelistinfos&sid={SID}";
             // Energie in Wh, "inval" wenn unbekannt
             string result = await Helpers.GetAsync(url);
-            return result;
+            var deviceList = Helpers.DeserializeXML<DeviceList>(result);
+            return deviceList;
         }
 
         /// <summary>
         /// Ermittelt Verbindungsstatus des Aktors.
         /// </summary>
         /// <param name="ain">AIN/MAC</param>
+        /// <exception cref="HttpRequestException">400, 403, 500</exception>
         /// <returns>Verbindungsstatus (bool)</returns>
         public async Task<bool> GetSwitchPresentAsync(string ain)
         {
@@ -145,6 +154,7 @@ namespace AvmSmartHome.NET
         /// Ermittelt Schaltzustand der Steckdose.
         /// </summary>
         /// <param name="ain">AIN/MAC</param>
+        /// <exception cref="HttpRequestException">400, 403, 500</exception>
         /// <returns>Schaltzustand (bool)</returns>
         public async Task<bool?> GetSwitchStateAsync(string ain)
         {
@@ -166,6 +176,7 @@ namespace AvmSmartHome.NET
         /// </summary>
         /// <param name="ain">AIN/MAC</param>
         /// <param name="setOn">neuer Zustand</param>
+        /// <exception cref="HttpRequestException">400, 403, 500</exception>
         /// <returns>neuer Zustand (bool)</returns>
         public async Task<bool> SetSwitchAsync(string ain, bool setOn)
         {
@@ -180,6 +191,7 @@ namespace AvmSmartHome.NET
         /// Invertiert den Zustand einer Steckdose.
         /// </summary>
         /// <param name="ain">AIN/MAC</param>
+        /// <exception cref="HttpRequestException">400, 403, 500</exception>
         /// <returns>neuer Zustand (bool)</returns>
         public async Task<bool> ToggleSwitchAsync(string ain)
         {
@@ -193,6 +205,7 @@ namespace AvmSmartHome.NET
         /// Ermittelt aktuell über die Steckdose entnommene Leistung.
         /// </summary>
         /// <param name="ain">AIN/MAC</param>
+        /// <exception cref="HttpRequestException">400, 403, 500</exception>
         /// <returns>Leistung in mW</returns>
         public async Task<double> GetSwitchPowerAsync(string ain)
         {
@@ -214,6 +227,7 @@ namespace AvmSmartHome.NET
         /// Erstinbetriebnahme oder Zurücksetzen der Energiestatistik.
         /// </summary>
         /// <param name="ain">AIN/MAC</param>
+        /// <exception cref="HttpRequestException">400, 403, 500</exception>
         /// <returns>Leistung in mW</returns>
         public async Task<double> GetSwitchEnergyAsync(string ain)
         {
@@ -234,6 +248,7 @@ namespace AvmSmartHome.NET
         /// Liefert Bezeichner des Aktors.
         /// </summary>
         /// <param name="ain">AIN/MAC</param>
+        /// <exception cref="HttpRequestException">400, 403, 500</exception>
         /// <returns>Name</returns>
         public async Task<string> GetSwitchNameAsync(string ain)
         {
@@ -247,6 +262,7 @@ namespace AvmSmartHome.NET
         /// Letzte Temperaturinformation des Aktors.
         /// </summary>
         /// <param name="ain">AIN/MAC</param>
+        /// <exception cref="HttpRequestException">400, 403, 500</exception>
         /// <returns>Temperatur in °C</returns>
         public async Task<double> GetSwitchTemperatureAsync(string ain)
         {
@@ -266,77 +282,51 @@ namespace AvmSmartHome.NET
         /// <summary>
         /// Für HKR aktuell eingestellte Solltemperatur.
         /// </summary>
+        /// <exception cref="HttpRequestException">400, 403, 500</exception>
         /// <returns>Temperatur</returns>
-        public async Task<Temperature> GetHKRSollAsync()
+        public async Task<TemperatureSetting> GetHKRSollAsync()
         {
             string url = $"{BaseURL}/webservices/homeautoswitch.lua?&switchcmd=gethkrtsoll&sid={SID}";
-            // Temperatur-Wert in  0,5 °C
-            //   Wertebereich: 16 – 56 
-            //                  8 - 28 °C
-            //  16 : <= 8°C
-            //  17 :    8.5°C
-            //  18 :    9.0°C
-            //  ......
-            //  56 : >= 28°C
-            //  254: ON
-            //  253: OFF
             string result = await Helpers.GetAsync(url);
             int tempwert = Convert.ToInt16(result);
-            Temperature temp = new Temperature(tempwert);
+            TemperatureSetting temp = new TemperatureSetting(tempwert);
             return temp;
         }
 
         /// <summary>
         /// Für HKR-Zeitschaltung eingestellte Komforttemperatur.
         /// </summary>
+        /// <exception cref="HttpRequestException">400, 403, 500</exception>
         /// <returns>Temperatur</returns>
-        public async Task<Temperature> GetHKRKomfortAsync()
+        public async Task<TemperatureSetting> GetHKRKomfortAsync()
         {
             string url = $"{BaseURL}/webservices/homeautoswitch.lua?&switchcmd=gethkrkomfort&sid={SID}";
-            // Temperatur-Wert in  0,5 °C
-            //   Wertebereich: 16 – 56 
-            //                  8 - 28 °C
-            //  16 : <= 8°C
-            //  17 :    8.5°C
-            //  18 :    9.0°C
-            //  ......
-            //  56 : >= 28°C
-            //  254: ON
-            //  253: OFF
             string result = await Helpers.GetAsync(url);
             int tempwert = Convert.ToInt16(result);
-            Temperature temp = new Temperature(tempwert);
+            TemperatureSetting temp = new TemperatureSetting(tempwert);
             return temp;
         }
 
         /// <summary>
         /// Für HKR-Zeitschaltung eingestellte Spartemperatur.
         /// </summary>
+        /// <exception cref="HttpRequestException">400, 403, 500</exception>
         /// <returns>Temperatur</returns>
-        public async Task<Temperature> GetHKRSparAsync()
+        public async Task<TemperatureSetting> GetHKRSparAsync()
         {
             string url = $"{BaseURL}/webservices/homeautoswitch.lua?&switchcmd=gethkrabsenk&sid={SID}";
-            // Temperatur-Wert in  0,5 °C
-            //   Wertebereich: 16 – 56 
-            //                  8 - 28 °C
-            //  16 : <= 8°C
-            //  17 :    8.5°C
-            //  18 :    9.0°C
-            //  ......
-            //  56 : >= 28°C
-            //  254: ON
-            //  253: OFF
             string result = await Helpers.GetAsync(url);
             int tempwert = Convert.ToInt16(result);
-            Temperature temp = new Temperature(tempwert);
+            TemperatureSetting temp = new TemperatureSetting(tempwert);
             return temp;
         }
 
         /// <summary>
         /// HKR Solltemperatur einstellen.
         /// </summary>
+        /// <exception cref="HttpRequestException">400, 403, 500</exception>
         /// <returns>Temperatur</returns>
-        public async Task SetHKRSollAsync(Temperature temp)
+        public async Task SetHKRSollAsync(TemperatureSetting temp)
         {
             int tempwert = temp.Value;
             string url = $"{BaseURL}/webservices/homeautoswitch.lua?&param={tempwert}&switchcmd=sethkrtsoll&sid={SID}";

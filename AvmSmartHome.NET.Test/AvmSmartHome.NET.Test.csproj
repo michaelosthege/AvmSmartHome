@@ -64,6 +64,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TestHelpers.cs" />
+    <Compile Include="TestCredentials.cs" />
+    <Compile Include="TestErrors.cs" />
     <Compile Include="TestSession.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
