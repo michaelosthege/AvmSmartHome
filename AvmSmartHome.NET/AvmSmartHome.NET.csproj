@@ -2,6 +2,18 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard1.4</TargetFramework>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Authors>Michael Osthege</Authors>
+    <Description>.NET Standard 1.4 implementation of the AVM SmartHome API</Description>
+    <PackageProjectUrl>https://github.com/michaelosthege/AvmSmartHome</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/michaelosthege/AvmSmartHome</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <PackageTags>AVM, home automation, AHA</PackageTags>
+    <PackageReleaseNotes>1.0.0
++ can get info about smart home devices
++ set/toggle switches etc.
++ unit tests</PackageReleaseNotes>
+    <PackageLicenseUrl>https://github.com/michaelosthege/AvmSmartHome/blob/master/LICENSE</PackageLicenseUrl>
   </PropertyGroup>
 
   <ItemGroup>
