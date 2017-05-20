@@ -33,7 +33,12 @@ string message = $"Switch {ain}" +
     $"\r\n E [Wh] = {energy}" +
     $"\r\n T [°C] = {temp}";
 Debug.WriteLine(message);
-}
+
+// Steckdose anschalten
+await session.SetSwitchAsync(ain, true);
+
+// Steckdose umschalten
+await session.ToggleSwitchAsync(ain);
 ```
 
 Example output:
