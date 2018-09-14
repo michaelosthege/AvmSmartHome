@@ -37,7 +37,7 @@ namespace AvmSmartHome.NET
         public Mode Mode { get; set; }
 
         [XmlElement(ElementName = "lock")]
-        public string Lock { get; set; }
+        public State Lock { get; set; }
 
         [XmlElement(ElementName = "devicelock")]
         public State DeviceLock { get; set; }

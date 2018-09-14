@@ -13,12 +13,11 @@ namespace AvmSmartHome.NET
         }
         #endregion
 
-        private int _Value;
-        private int tempwert;
+        private int temperatureRaw;
 
-        public TemperatureSetting(int tempwert)
+        public TemperatureSetting(int temperatureRaw)
         {
-            this.tempwert = tempwert;
+            this.temperatureRaw = temperatureRaw;
         }
 
         ///<summary>
@@ -33,7 +32,7 @@ namespace AvmSmartHome.NET
         ///  254: ON
         ///  253: OFF
         ///</summary>
-        public int Value { get { return _Value; } set { _Value = value; OnPropertyChanged(); } }
+        public int Value { get { return temperatureRaw; } set { temperatureRaw = value; OnPropertyChanged(); } }
 
         public string Name
         {
@@ -46,18 +45,17 @@ namespace AvmSmartHome.NET
                     case 16: return "<= 8°C";
                     case 56: return ">= 28°C";
                     default:
-                        double temp = 8;
-                        temp += (_Value - 16) * 0.5;
-                        return $"{temp:.1f}°C";
+                        double temp = temperatureRaw * 0.5;
+                        return $"{temp}°C";
                 }
             }
         }
 
-        public bool IsOn { get { return _Value != 253; } }
+        public bool IsOn { get { return temperatureRaw != 253; } }
 
         public override string ToString()
         {
-            return base.ToString();
+            return Name;
         }
     }
 
