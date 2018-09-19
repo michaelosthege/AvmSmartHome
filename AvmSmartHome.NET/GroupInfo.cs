@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Serialization;
 
 namespace AvmSmartHome.NET
@@ -12,24 +13,23 @@ namespace AvmSmartHome.NET
         /// </summary>
         [XmlElement(ElementName = "masterdeviceid")]
         public int MasterDeviceId { get; set; }
+
         /// <summary>
         /// interne ids der Gruppenmitglieder, kommasepariert
         /// </summary>
         [XmlElement(ElementName = "members")]
         public String MemberIds { get; set; }
 
+        /// <summary>
+        /// interne ids der Gruppenmitglieder
+        /// </summary>
         [XmlIgnore]
-        public List<int> Member
+        public IEnumerable<int> Members
         {
             get
             {
                 String[] ids = MemberIds.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-                List<int> idList = new List<int>();
-                foreach (String id in ids)
-                {
-                    idList.Add(Int32.Parse(id));
-                }
-                return idList;
+                return ids.Select(id => Int32.Parse(id));
             }
         }
     }
