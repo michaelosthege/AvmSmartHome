@@ -7,7 +7,7 @@ namespace AvmSmartHome.NET
     {
         [XmlElement(ElementName = "power")]
         /// <summary>
-        /// Wert in 0,001 W (aktuelle Leistung, wird etwa alle 2 Minuten aktualisiert)
+        /// Aktuelle Leistung in mW (wird etwa alle 2 Minuten aktualisiert)
         /// </summary>
         public double PowerRaw { get; set; }
         public double Power
@@ -17,7 +17,7 @@ namespace AvmSmartHome.NET
         }
 
         /// <summary>
-        /// Wert in 1.0 Wh (absoluter Verbrauch seit Inbetriebnahme)
+        /// Absoluter Verbrauch seit Inbetriebnahme in Wh
         /// </summary>
         [XmlElement(ElementName = "energy")]
         public double Energy { get; set; }
@@ -26,7 +26,7 @@ namespace AvmSmartHome.NET
         [XmlElement(ElementName = "voltage")]
 
         /// <summary>
-        /// Wert in 0,001 V (aktuelle Spannung, wird etwa alle 2 Minuten aktualisiert)
+        /// Aktuelle Spannung in mV (wird etwa alle 2 Minuten aktualisiert)
         /// </summary>
         public double VoltageRaw { get; set; }
         public double Voltage

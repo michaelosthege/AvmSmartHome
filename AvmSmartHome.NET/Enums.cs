@@ -83,8 +83,8 @@ namespace AvmSmartHome.NET
     /// Fehlercodes die der HKR liefert (bspw. wenn es bei der Installation des HKRs Problem gab):
     /// 0: kein Fehler
     /// 1: Keine Adaptierung möglich.Gerät korrekt am Heizkörper montiert?
-    /// 2: Ventilhub zu kurz oder Batterieleistung zu schwach.Ventilstößel per Hand mehrmals öfnen und schließen oder neue Batterien einsetzen.
-    /// 3: Keine Ventilbewegung möglich.Ventilstößel frei?
+    /// 2: Ventilhub zu kurz oder Batterieleistung zu schwach. Ventilstößel per Hand mehrmals öfnen und schließen oder neue Batterien einsetzen.
+    /// 3: Keine Ventilbewegung möglich. Ventilstößel frei?
     /// 4: Die Installation wird gerade vorbereitet.
     /// 5: Der Heizkörperregler ist im Installationsmodus und kann auf das Heizungsventil montiert werden.
     /// 6: Der Heizkörperregler passt sich nun an den Hub des Heizungsventils an.

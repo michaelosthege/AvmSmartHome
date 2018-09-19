@@ -52,19 +52,19 @@ namespace AvmSmartHome.NET
         public State BatteryLow { get; set; }
 
         /// <summary>
-        /// 0 oder 1: Fenster-ofen erkannt
+        /// 0 oder 1: Fenster-offen erkannt
         /// </summary>
         [XmlElement(ElementName = "windowopenactiv")]
         public State WindowOpenActive { get; set; }
 
         /// <summary>
-        /// 0/1 - Tastensperre über UI/API ein nein/ja(leer bei unbekannt oder Fehler
+        /// 0/1 - Tastensperre über UI/API ein nein/ja (leer bei unbekannt oder Fehler)
         /// </summary>
         [XmlElement(ElementName = "lock")]
         public State Lock { get; set; }
 
         /// <summary>
-        /// 0/1 - Tastensperre direkt am Gerät ein nein/ja(leer bei unbekannt oder Fehler)
+        /// 0/1 - Tastensperre direkt am Gerät ein nein/ja (leer bei unbekannt oder Fehler))
         /// </summary>
         [XmlElement(ElementName = "devicelock")]
         public State DeviceLock { get; set; }
