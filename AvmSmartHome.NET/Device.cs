@@ -1,4 +1,5 @@
-﻿using System.Xml.Serialization;
+﻿using System;
+using System.Xml.Serialization;
 
 namespace AvmSmartHome.NET
 {
@@ -14,6 +15,12 @@ namespace AvmSmartHome.NET
         [XmlElement(ElementName = "name")]
         public string Name { get; set; }
 
+        [XmlElement(ElementName = "etsiunitinfo")]
+        public HanfunDevice HanfunDevice { get; set; }
+
+        [XmlElement(ElementName = "hkr")]
+        public RadiatorController RadiatorController { get; set; }
+
         [XmlElement(ElementName = "switch")]
         public Switch Switch { get; set; }
 
@@ -22,6 +29,9 @@ namespace AvmSmartHome.NET
 
         [XmlElement(ElementName = "temperature")]
         public Temperature Temperature { get; set; }
+
+        [XmlElement(ElementName = "alert")]
+        public Alert Alert { get; set; }
 
         [XmlAttribute(AttributeName = "identifier")]
         public string Identifier { get; set; }
@@ -41,9 +51,22 @@ namespace AvmSmartHome.NET
         [XmlAttribute(AttributeName = "productname")]
         public string ProductName { get; set; }
 
+        public DeviceFunctionClass DeviceFunctionClass
+        {
+            get
+            {
+                return (DeviceFunctionClass)Enum.ToObject(typeof(DeviceFunctionClass), Int32.Parse(FunctionBitmask));
+            }
+        }
+
         public Device()
         {
 
+        }
+
+        public override string ToString()
+        {
+            return Name;
         }
     }
 }

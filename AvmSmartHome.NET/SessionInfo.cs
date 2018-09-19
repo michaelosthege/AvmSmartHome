@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
+using System.Net.Http;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
-using System.Xml.Schema;
-using System.Net.Http;
 
 namespace AvmSmartHome.NET
 {
@@ -84,7 +82,7 @@ namespace AvmSmartHome.NET
             if (!intermediate.HasSID && intermediate.BlockTime == 0)
             {
                 string response = $"{intermediate.Challenge}-{Helpers.ComputeMD5($"{intermediate.Challenge}-{Password}", Encoding.Unicode)}";
-                string uri = $"{BaseURL}/login_sid.lua?page=&username={Username}&response={response}";
+                string uri = $"{BaseURL}/login_sid.lua?username={Username}&response={response}";
                 doc = await Helpers.GetAsync(uri);
                 final = SessionInfo.FromXML(doc);
             }
@@ -93,7 +91,19 @@ namespace AvmSmartHome.NET
             this.SID = final.SID;
             this.Challenge = final.Challenge;
             if (this.SID == "0000000000000000")
+            {
                 throw new UnauthorizedAccessException();
+            }
+        }
+
+        public async Task LogoutAsync()
+        {
+            if (!HasSID)
+            {
+                return;
+            }
+            string uri = $"{BaseURL}/login_sid.lua?logout=test&sid={SID}";
+            string doc = await Helpers.GetAsync(uri);
         }
 
         /// <summary>
