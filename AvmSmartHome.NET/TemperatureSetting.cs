@@ -13,27 +13,24 @@ namespace AvmSmartHome.NET
         }
         #endregion
 
-        private int temperatureRaw;
-
-        public TemperatureSetting(int temperatureRaw)
-        {
-            this.temperatureRaw = temperatureRaw;
-        }
+        private int _TemperatureRaw;
 
         ///<summary>
         /// Temperatur-Wert in  0,5 °C
-        ///   Wertebereich: 16 – 56 
-        ///                  8 - 28 °C
-        ///  16 : <= 8°C
-        ///  17 :    8.5°C
-        ///  18 :    9.0°C
-        ///  ......
-        ///  56 : >= 28°C
-        ///  254: ON
-        ///  253: OFF
+        /// <para>Wertebereich: 16 – 56 (8 – 28 °C)</para>
+        /// <para>16 : &lt;= 8°C</para>
+        /// <para>17 :    8.5°C</para>
+        /// <para>18 :    9.0°C</para>
+        /// <para>...</para>
+        /// <para>56 : &gt;= 28°C</para>
+        /// <para>254: ON</para>
+        /// <para>253: OFF</para>
         ///</summary>
-        public int Value { get { return temperatureRaw; } set { temperatureRaw = value; OnPropertyChanged(); } }
+        public int Value { get { return _TemperatureRaw; } set { _TemperatureRaw = value; OnPropertyChanged(); } }
 
+        /// <summary>
+        /// String des Temperatur-Werts (<see cref="Value"/>)
+        /// </summary>
         public string Name
         {
             get
@@ -45,13 +42,18 @@ namespace AvmSmartHome.NET
                     case 16: return "<= 8°C";
                     case 56: return ">= 28°C";
                     default:
-                        double temp = temperatureRaw * 0.5;
+                        double temp = _TemperatureRaw * 0.5;
                         return $"{temp}°C";
                 }
             }
         }
 
-        public bool IsOn { get { return temperatureRaw != 253; } }
+        public bool IsOn { get { return _TemperatureRaw != 253; } }
+
+        public TemperatureSetting(int temperatureRaw)
+        {
+            this._TemperatureRaw = temperatureRaw;
+        }
 
         public override string ToString()
         {
