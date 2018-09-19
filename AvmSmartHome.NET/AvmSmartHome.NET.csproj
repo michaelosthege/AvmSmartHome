@@ -9,11 +9,15 @@
     <RepositoryUrl>https://github.com/michaelosthege/AvmSmartHome</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>AVM, home automation, AHA</PackageTags>
-    <PackageReleaseNotes>1.0.0
+    <PackageReleaseNotes>1.1.0
++ Support for HKR (by Jan Scheperski)
+
+1.0.0
 + can get info about smart home devices
 + set/toggle switches etc.
 + unit tests</PackageReleaseNotes>
     <PackageLicenseUrl>https://github.com/michaelosthege/AvmSmartHome/blob/master/LICENSE</PackageLicenseUrl>
+    <Version>1.1.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
