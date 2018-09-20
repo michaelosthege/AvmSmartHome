@@ -17,7 +17,14 @@
         /// </summary>
         public ValueBase(string rawValue)
         {
-            Convert(double.Parse(rawValue));
+            if ("-".Equals(rawValue))
+            {
+                Value = double.NaN;
+            }
+            else
+            {
+                Convert(double.Parse(rawValue));
+            }
         }
 
         /// <summary>
