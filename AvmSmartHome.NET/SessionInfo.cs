@@ -343,7 +343,18 @@ namespace AvmSmartHome.NET
             string result = await Helpers.GetAsync(url);
         }
 
-
+        /// <summary>
+        /// Liefert die grundlegenden Statistiken (Temperatur, Spannung, Leistung) des Aktors. Für Aktoren mit Temperatursensor gibt es Temperatur-Werte. Für Aktoren mit Energie Messgerät gibt es Spannungs- und Leistungs-Werte.
+        /// </summary>
+        /// <param name="ain">Der ain-HTTP-Parameter identifiziert den Aktor</param>
+        /// <exception cref="HttpRequestException">400, 403, 500</exception>
+        /// <returns>Statisitiken</returns>
+        public async Task<DeviceStatistics> GetDeviceStatisticsAsync(string ain)
+        {
+            string url = $"{BaseURL}/webservices/homeautoswitch.lua?&ain={ain}&switchcmd=getbasicdevicestats&sid={SID}";
+            string result = await Helpers.GetAsync(url);
+            return Helpers.DeserializeXML<DeviceStatistics>(result);
+        }
     }
 
 }
