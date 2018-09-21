@@ -65,12 +65,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TestPowerValue.cs" />
+    <Compile Include="TestEnergyValue.cs" />
+    <Compile Include="TestTemperatureValue.cs" />
     <Compile Include="TestDeviceStatistics.cs" />
     <Compile Include="TestHelpers.cs" />
     <Compile Include="TestCredentials.cs" />
     <Compile Include="TestErrors.cs" />
     <Compile Include="TestSession.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestVoltageValue.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AvmSmartHome.NET\AvmSmartHome.NET.csproj">
