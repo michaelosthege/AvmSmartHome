@@ -15,6 +15,18 @@ namespace AvmSmartHome.NET
         [XmlElement(ElementName = "name")]
         public string Name { get; set; }
 
+        /// <summary>
+        /// Batterieladezustand in Prozent (Optional)
+        /// </summary>
+        [XmlElement(ElementName = "battery")]
+        public int Battery { get; set; }
+
+        /// <summary>
+        /// 0 oder 1: Batterieladezustand niedrig - bitte Batterie wechseln (Optional)
+        /// </summary>
+        [XmlElement(ElementName = "batterylow")]
+        public State BatteryLow { get; set; }
+
         [XmlElement(ElementName = "etsiunitinfo")]
         public HanfunDevice HanfunDevice { get; set; }
 
@@ -32,6 +44,13 @@ namespace AvmSmartHome.NET
 
         [XmlElement(ElementName = "alert")]
         public Alert Alert { get; set; }
+
+        /// <summary>
+        /// Taster
+        /// ACHTUNG: Ein <device> kann gegebenenfalls mehrere <button>-Knoten haben. Der FRITZ!DECT 400 hat <button>-Knoten.
+        /// </summary>
+        [XmlElement(ElementName = "button")]
+        public Button[] Button { get; set; }
 
         [XmlAttribute(AttributeName = "identifier")]
         public string Identifier { get; set; }
