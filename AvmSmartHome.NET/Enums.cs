@@ -106,4 +106,37 @@ namespace AvmSmartHome.NET
         [XmlEnum("6")]
         Initialization
     }
+
+    /// <summary>
+    /// Bitmaske
+    /// 0x01 = HueSaturation-Mode
+    /// 0x04 = Farbtemperatur-Mode
+    /// </summary>
+    [Flags]
+    public enum SupportedModes
+    {
+        HueSaturationMode = 1,
+        ColorTemperatureMode = 1 << 4
+    }
+
+    /// <summary>
+    /// 1 (HueSaturation)
+    /// 4 (Farbtemperatur)
+    /// "" (leer → unbekannt)
+    /// </summary>
+    public enum CurrentModes
+    {
+        [XmlEnum("1")]
+        HueSaturation,
+        [XmlEnum("4")]
+        ColorTemperature,
+        [XmlEnum("")]
+        Unknown
+    }
+    public enum SimpleOnOffStates
+    {
+        Off = 0,
+        On = 1,
+        Toggle = 2
+    }
 }

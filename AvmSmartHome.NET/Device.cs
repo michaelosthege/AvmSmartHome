@@ -44,6 +44,15 @@ namespace AvmSmartHome.NET
 
         [XmlElement(ElementName = "alert")]
         public Alert Alert { get; set; }
+      
+        [XmlElement(ElementName = "simpleonoff")]
+        public SimpleOnOff SimpleOnOff { get; set; }
+
+        [XmlElement(ElementName = "levelcontrol")]
+        public LevelControl LevelControl { get; set; }
+
+        [XmlElement(ElementName = "colorcontrol")]
+        public ColorControl ColorControl { get; set; }
 
         /// <summary>
         /// Taster

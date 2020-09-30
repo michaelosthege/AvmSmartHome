@@ -198,6 +198,63 @@ namespace AvmSmartHome.NET
         }
 
         /// <summary>
+        /// Gerät/Aktor/Lampe an-/ausschalten oder toggeln
+        /// </summary>
+        /// <param name="ain">AIN/MAC</param>
+        /// <param name="simpleOnOffState">neuer Zustand</param>
+        /// <exception cref="HttpRequestException">400, 403, 500</exception>
+        /// <returns>neuer Zustand (bool)</returns>
+        public async Task<string> SetSimpleOnOffAsync(string ain, SimpleOnOffStates simpleOnOffState)
+        {
+            string url = $"{BaseURL}/webservices/homeautoswitch.lua?ain={ain}&switchcmd=setsimpleonoff&onoff={simpleOnOffState}&sid={SID}";
+            return await Helpers.GetAsync(url);
+        }
+
+        /// <summary>
+        /// Dimm-, Höhen-, Helligkeitbzw. Niveau-Level einstellen
+        /// </summary>
+        /// <param name="ain">AIN/MAC</param>
+        /// <param name="level">0(0%) bis 255(100%)</param>
+        /// <exception cref="HttpRequestException">400, 403, 500</exception>
+        /// <returns>neuer Zustand (bool)</returns>
+        public async Task<string> SetLevelAsync(string ain, int level)
+        {
+            string url = $"{BaseURL}/webservices/homeautoswitch.lua?ain={ain}&switchcmd=setlevel&level={level}&sid={SID}";
+            return await Helpers.GetAsync(url);
+        }
+
+        /// <summary>
+        /// HueSaturation-Farbe einstellen
+        /// Der HSV-Farbraum wird mit dem HueSaturation-Mode unterstützt. Der Hellwert(Value) kann über setlevel/setlevelpercentage
+        /// konfiguriert werden, die Hueund Saturation-Werte sind hier konfigurierbar.
+        /// </summary>
+        /// <param name="ain">AIN/MAC</param>
+        /// <param name="hue">in Grad, 0 bis 359 (0° bis 359°)</param>
+        /// <param name="saturation">0(0%) bis 255(100%)</param>
+        /// <param name="duration">Schnelligkeit der Änderung in 100ms. 0 sofort</param>
+        /// <exception cref="HttpRequestException">400, 403, 500</exception>
+        /// <returns>neuer Zustand (bool)</returns>
+        public async Task<string> SetColorAsync(string ain, int hue, int saturation, int duration)
+        {
+            string url = $"{BaseURL}/webservices/homeautoswitch.lua?ain={ain}&switchcmd=setcolor&hue={hue}&saturation={saturation}&duration={duration}&sid={SID}";
+            return await Helpers.GetAsync(url);
+        }
+
+        /// <summary>
+        /// Farbtemperatur einstellen
+        /// </summary>
+        /// <param name="ain">AIN/MAC</param>
+        /// <param name="temperature">in Kelvin, typisch im Bereich 2700 bis 6500</param>
+        /// <param name="duration">Schnelligkeit der Änderung in 100ms. 0 sofort</param>
+        /// <exception cref="HttpRequestException">400, 403, 500</exception>
+        /// <returns>neuer Zustand (bool)</returns>
+        public async Task<string> SetColorTemperatureAsync(string ain, int temperature, int duration)
+        {
+            string url = $"{BaseURL}/webservices/homeautoswitch.lua?ain={ain}&switchcmd=setcolortemperature&temperature={temperature}&duration={duration}&sid={SID}";
+            return await Helpers.GetAsync(url);
+        }
+
+        /// <summary>
         /// Invertiert den Zustand einer Steckdose.
         /// </summary>
         /// <param name="ain">AIN/MAC</param>
