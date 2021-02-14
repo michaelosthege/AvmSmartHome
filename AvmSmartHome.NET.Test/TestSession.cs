@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using System.Linq;
 
 namespace AvmSmartHome.NET.Test
 {
@@ -83,7 +84,27 @@ namespace AvmSmartHome.NET.Test
             await session.AuthenticateAsync();
             
             var result = await session.GetDeviceListInfosAsync();
+
+            Assert.IsTrue(result.Device.Count > 0);
         }
 
+        [TestMethod]
+        public async Task TestSetSimpleOnOffAsync()
+        {
+            SessionInfo session = new SessionInfo(TestCredentials.USERNAME, TestCredentials.PASSWORD, TestCredentials.HOSTNAME);
+            await session.AuthenticateAsync();
+
+            var deviceList = await session.GetDeviceListInfosAsync();
+            var compatibleDevice = deviceList.Device.FirstOrDefault(d => d.SimpleOnOff != null);
+
+            if (compatibleDevice == null)
+            {
+                Assert.Fail("No compatible device found!");
+            }
+            else
+            {
+                var result = await session.SetSimpleOnOffAsync(compatibleDevice.Identifier, SimpleOnOffStates.Toggle);
+            }
+        }
     }
 }

@@ -16,8 +16,8 @@
 + can get info about smart home devices
 + set/toggle switches etc.
 + unit tests</PackageReleaseNotes>
-    <PackageLicenseUrl>https://github.com/michaelosthege/AvmSmartHome/blob/master/LICENSE</PackageLicenseUrl>
     <Version>1.1.0</Version>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

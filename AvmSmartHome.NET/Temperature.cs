@@ -6,14 +6,22 @@ namespace AvmSmartHome.NET
     public class Temperature
     {
         [XmlElement(ElementName = "celsius")]
-        public double CelsiusSteps { get; set; }
+        public double CurrentValueRaw { get; set; }
+
         [XmlIgnore]
-        public double Celsius { get { return CelsiusSteps / 10; } set { CelsiusSteps = value * 10; } }
+        public TemperatureValue CurrentValue
+        {
+            get { return new TemperatureValue(CurrentValueRaw); }
+        }
 
         [XmlElement(ElementName = "offset")]
-        public double OffsetSteps { get; set; }
+        public double OffsetRaw { get; set; }
+
         [XmlIgnore]
-        public double Offset { get { return OffsetSteps / 10; } set { OffsetSteps = value * 10; } }
+        public TemperatureValue Offset
+        {
+            get { return new TemperatureValue(OffsetRaw); }
+        }
 
         public Temperature()
         {
